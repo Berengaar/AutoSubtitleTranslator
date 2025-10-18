@@ -1,90 +1,83 @@
-# Udemy Türkçe Çeviri Extension
+# Udemy Turkish Translation Extension
 
-Bu Chrome extension, Udemy videolarının altyazılarını gerçek zamanlı olarak Türkçeye çevirir.
+A Chrome extension that translates Udemy video subtitles to Turkish in real-time.
 
-## 🚀 Özellikler
+## 🚀 Features
 
-- **Gerçek Zamanlı Çeviri**: Video altyazıları otomatik olarak Türkçeye çevrilir
-- **Akıllı Tespit**: Udemy video sayfalarını otomatik tespit eder
-- **Cache Sistemi**: Çeviriler önbelleğe alınır, hızlı yanıt süresi
-- **Modern UI**: Şık popup arayüzü ve kullanıcı dostu tasarım
-- **Mobil Uyumlu**: Responsive tasarım ile tüm cihazlarda çalışır
+- **Real-time Translation**: Video subtitles are automatically translated to Turkish
+- **Smart Detection**: Automatically detects Udemy video pages
+- **Cache System**: Translations are cached for faster response times
+- **Modern UI**: Sleek popup interface with user-friendly design
+- **Mobile Compatible**: Responsive design that works on all devices
 
-## 📦 Kurulum
+## 📦 Installation
 
-1. Bu projeyi bilgisayarınıza indirin
-2. Chrome'da `chrome://extensions/` adresine gidin
-3. "Geliştirici modu"nu aktif edin
-4. "Paketlenmemiş uzantı yükle" butonuna tıklayın
-5. Bu klasörü seçin
+1. Download this project to your computer
+2. Go to `chrome://extensions/` in Chrome
+3. Enable "Developer mode"
+4. Click "Load unpacked extension"
+5. Select this folder
 
-## 🎯 Kullanım
+## 🎯 Usage
 
-1. Udemy'de bir video sayfasına gidin
-2. Video altyazılarını açın
-3. Miraç extension'ı aktif edin (popup'ta toggle switch)
-4. İngilizce altyazıların altında Türkçe çeviriler görünecek
+1. Go to a Udemy video page
+2. Enable video subtitles
+3. Activate the extension (toggle switch in popup)
+4. Turkish translations will appear below English subtitles
 
-## 🛠️ Teknik Detaylar
+## 🛠️ Technical Details
 
-### Dosya Yapısı
+### File Structure
 ```
 udemy-translate-ext/
 ├── manifest.json          # Extension manifest
-├── content.js             # Ana çeviri scripti
-├── popup.html             # Popup arayüzü
+├── content.js             # Main translation script
+├── popup.html             # Popup interface
 ├── popup.js               # Popup JavaScript
-├── styles.css             # Çeviri stilleri
-├── icons/                 # Extension ikonları
-│   └── icon.svg          # SVG ikon
-└── README.md             # Bu dosya
+├── styles.css             # Translation styles
+├── icons/                 # Extension icons
+│   └── icon.svg          # SVG icon
+└── README.md             # This file
 ```
 
-### Kullanılan Teknolojiler
-- **Chrome Extensions API**: Extension yönetimi
-- **Google Translate API**: Çeviri servisi
-- **MutationObserver**: DOM değişikliklerini izleme
-- **CSS3**: Modern stil ve animasyonlar
+### Technologies Used
+- **Chrome Extensions API**: Extension management
+- **Google Translate API**: Translation service
+- **MutationObserver**: DOM change monitoring
+- **CSS3**: Modern styling and animations
 
-### API Entegrasyonu
-Extension, Google Translate API'sini kullanarak İngilizce metinleri Türkçeye çevirir. API yanıt vermediğinde fallback çeviri sistemi devreye girer.
+### API Integration
+The extension uses Google Translate API to translate English text to Turkish. When the API doesn't respond, a fallback translation system is activated.
 
-## 🔧 Geliştirme
+## 🔧 Development
 
-### Gereksinimler
-- Chrome 88+ (Manifest V3 desteği)
-- Modern web tarayıcısı
+### Requirements
+- Chrome 88+ (Manifest V3 support)
+- Modern web browser
 
-### Özelleştirme
-- `styles.css` dosyasından çeviri görünümünü değiştirebilirsiniz
-- `content.js` dosyasından çeviri mantığını özelleştirebilirsiniz
-- `popup.html` dosyasından arayüzü değiştirebilirsiniz
+### Customization
+- Modify translation appearance in `styles.css`
+- Customize translation logic in `content.js`
+- Change interface in `popup.html`
 
-## 📝 Lisans
+## 📝 License
 
-Bu proje MIT lisansı altında lisanslanmıştır.
+This project is licensed under the MIT License.
 
-## 🤝 Katkıda Bulunma
+## 🤝 Contributing
 
-1. Bu repository'yi fork edin
-2. Yeni bir branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'Add amazing feature'`)
-4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
-5. Pull Request oluşturun
+1. Fork this repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push your branch (`git push origin feature/amazing-feature`)
+5. Create a Pull Request
 
-## 🐛 Sorun Bildirimi
+## 📞 Contact
 
-Herhangi bir sorunla karşılaştığınızda:
-1. Chrome Developer Tools'u açın (F12)
-2. Console sekmesinde hata mesajlarını kontrol edin
-3. Sorunu detaylı bir şekilde açıklayarak issue oluşturun
-
-## 📞 İletişim
-
-Proje hakkında sorularınız için GitHub issues kullanabilirsiniz.
+For questions about this project, you can use GitHub issues.
 
 ---
 
-**Not**: Bu extension eğitim amaçlı geliştirilmiştir. Ticari kullanım için gerekli izinleri almayı unutmayın.
+**Note**: This extension is developed for educational purposes. Please obtain necessary permissions for commercial use.
 
 
