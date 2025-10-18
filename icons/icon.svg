@@ -1,0 +1,26 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#grad1)" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Translation symbol (A -> 阿) -->
+  <text x="64" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white">A</text>
+  
+  <!-- Arrow -->
+  <path d="M54 55 L74 55 L74 60 L82 55 L74 50 L74 55" fill="white"/>
+  
+  <!-- Turkish symbol -->
+  <text x="64" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white">Ç</text>
+  
+  <!-- Video play icon -->
+  <circle cx="64" cy="100" r="12" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="1"/>
+  <polygon points="60,95 60,105 70,100" fill="white"/>
+</svg>
+
+

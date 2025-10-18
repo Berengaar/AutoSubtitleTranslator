@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Udemy Türkçe Çeviri",
+  "version": "1.0.0",
+  "description": "Udemy videolarının altyazılarını gerçek zamanlı olarak Türkçeye çevirir",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.udemy.com/*",
+    "https://translate.googleapis.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.udemy.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Udemy Çeviri"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["styles.css"],
+      "matches": ["https://www.udemy.com/*"]
+    }
+  ]
+}

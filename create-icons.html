@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .icon-item {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .instructions {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Extension Icon Creator</h1>
+        
+        <div class="instructions">
+            <h3>📋 Talimatlar:</h3>
+            <ol>
+                <li>Aşağıdaki her ikon için "İndir" butonuna tıklayın</li>
+                <li>İndirilen dosyaları <code>icons/</code> klasörüne kaydedin</li>
+                <li>Dosya isimlerini tam olarak belirtilen şekilde kaydedin</li>
+                <li>Sonra manifest.json'ı tekrar güncelleyeceğiz</li>
+            </ol>
+        </div>
+
+        <div class="icon-grid">
+            <div class="icon-item">
+                <canvas id="icon16" width="16" height="16"></canvas>
+                <div>16x16 - icon16.png</div>
+                <button onclick="downloadIcon('icon16', 16)">İndir</button>
+            </div>
+            
+            <div class="icon-item">
+                <canvas id="icon32" width="32" height="32"></canvas>
+                <div>32x32 - icon32.png</div>
+                <button onclick="downloadIcon('icon32', 32)">İndir</button>
+            </div>
+            
+            <div class="icon-item">
+                <canvas id="icon48" width="48" height="48"></canvas>
+                <div>48x48 - icon48.png</div>
+                <button onclick="downloadIcon('icon48', 48)">İndir</button>
+            </div>
+            
+            <div class="icon-item">
+                <canvas id="icon128" width="128" height="128"></canvas>
+                <div>128x128 - icon128.png</div>
+                <button onclick="downloadIcon('icon128', 128)">İndir</button>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>✅ Sonraki Adımlar:</h3>
+            <ol>
+                <li>Tüm ikonları indirip kaydettikten sonra</li>
+                <li>Chrome'da extension'ı tekrar yüklemeyi deneyin</li>
+                <li>Hala hata alırsanız, manifest.json'ı tekrar güncelleyeceğiz</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Gradient renkleri
+        const gradientColors = [
+            {r: 102, g: 126, b: 234}, // #667eea
+            {r: 118, g: 75, b: 162}  // #764ba2
+        ];
+
+        function createGradient(ctx, size) {
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, `rgb(${gradientColors[0].r}, ${gradientColors[0].g}, ${gradientColors[0].b})`);
+            gradient.addColorStop(1, `rgb(${gradientColors[1].r}, ${gradientColors[1].g}, ${gradientColors[1].b})`);
+            return gradient;
+        }
+
+        function drawIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Arka plan gradient
+            ctx.fillStyle = createGradient(ctx, size);
+            ctx.fillRect(0, 0, size, size);
+            
+            // Kenar çizgisi
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size > 32 ? 2 : 1;
+            ctx.strokeRect(0, 0, size, size);
+            
+            // Merkez çember
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size * 0.3;
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Çeviri sembolü (A -> Ç)
+            if (size >= 32) {
+                ctx.fillStyle = 'white';
+                ctx.font = `bold ${size * 0.15}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('A→Ç', centerX, centerY);
+            } else {
+                // Küçük ikonlar için basit nokta
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, size * 0.1, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+
+        function downloadIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = `icon${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Sayfa yüklendiğinde tüm ikonları çiz
+        window.onload = function() {
+            drawIcon('icon16', 16);
+            drawIcon('icon32', 32);
+            drawIcon('icon48', 48);
+            drawIcon('icon128', 128);
+        };
+    </script>
+</body>
+</html>
+
+

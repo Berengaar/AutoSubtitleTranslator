@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator - Udemy Translation Extension</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .icon-item {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .icon-item img {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .instructions {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Udemy Çeviri Extension - Icon Generator</h1>
+        
+        <div class="instructions">
+            <h3>📋 Talimatlar:</h3>
+            <ol>
+                <li>Aşağıdaki ikonları sağ tıklayıp "Resmi farklı kaydet" ile kaydedin</li>
+                <li>16x16 boyutundaki ikonu <code>icons/icon16.png</code> olarak kaydedin</li>
+                <li>32x32 boyutundaki ikonu <code>icons/icon32.png</code> olarak kaydedin</li>
+                <li>48x48 boyutundaki ikonu <code>icons/icon48.png</code> olarak kaydedin</li>
+                <li>128x128 boyutundaki ikonu <code>icons/icon128.png</code> olarak kaydedin</li>
+            </ol>
+        </div>
+
+        <div class="icon-preview">
+            <div class="icon-item">
+                <img src="icons/icon.svg" width="16" height="16" alt="16x16 Icon">
+                <div>16x16</div>
+                <button onclick="downloadIcon(16)">İndir</button>
+            </div>
+            
+            <div class="icon-item">
+                <img src="icons/icon.svg" width="32" height="32" alt="32x32 Icon">
+                <div>32x32</div>
+                <button onclick="downloadIcon(32)">İndir</button>
+            </div>
+            
+            <div class="icon-item">
+                <img src="icons/icon.svg" width="48" height="48" alt="48x48 Icon">
+                <div>48x48</div>
+                <button onclick="downloadIcon(48)">İndir</button>
+            </div>
+            
+            <div class="icon-item">
+                <img src="icons/icon.svg" width="128" height="128" alt="128x128 Icon">
+                <div>128x128</div>
+                <button onclick="downloadIcon(128)">İndir</button>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>✅ Extension Kurulumu:</h3>
+            <ol>
+                <li>Chrome'da <code>chrome://extensions/</code> adresine gidin</li>
+                <li>"Geliştirici modu"nu aktif edin</li>
+                <li>"Paketlenmemiş uzantı yükle" butonuna tıklayın</li>
+                <li>Bu proje klasörünü seçin</li>
+                <li>Extension yüklendikten sonra Udemy'e gidin ve test edin</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function downloadIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, size, size);
+                const link = document.createElement('a');
+                link.download = `icon${size}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            };
+            img.src = 'icons/icon.svg';
+        }
+    </script>
+</body>
+</html>
+
+
