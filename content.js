@@ -149,15 +149,22 @@ class UdemySubtitleTranslator {
         if (currentText && currentText !== this.lastTargetText) {
             this.isTranslating = true;
 
+            // Çeviri başlarken orijinal metni gizle
+            targetElement.innerHTML = '';
+
             try {
                 const translatedText = await this.translateText(currentText);
                 
                 if (translatedText && translatedText !== currentText) {
+                    // Çeviri tamamlandığında hem orijinal hem çeviriyi göster
                     targetElement.innerHTML = currentText + '<br><span style="color: white;">' + translatedText + '</span>';
+                } else {
+                    // Çeviri başarısızsa orijinal metni göster
+                    targetElement.innerHTML = currentText;
                 }
             } catch (error) {
                 console.error('Translation error:', error);
-                // Hata durumunda sadece orijinal metni göster, çeviriye devam et
+                // Hata durumunda orijinal metni göster
                 targetElement.innerHTML = currentText;
             } finally {
                 this.isTranslating = false;
