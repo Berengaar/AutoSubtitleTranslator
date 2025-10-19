@@ -1,15 +1,15 @@
-/* Udemy Türkçe Çeviri Extension Styles */
+/* AutoDualSubtitleTranslator Extension Styles */
 
-/* Çeviri metni - Udemy'nin orijinal altyazı stillerini kullanır */
+/* Translation text - Uses Udemy's original subtitle styles */
 .captions-display--captions-cue-text--TQ0DQ.turkish-translation {
-    /* Udemy'nin orijinal CSS'i otomatik olarak uygulanır */
+    /* Udemy's original CSS is applied automatically */
     display: block !important;
     width: 100% !important;
     clear: both !important;
     float: none !important;
     flex: none !important;
     position: relative !important;
-    order: 2 !important; /* Her zaman son sırada olsun */
+    order: 2 !important; /* Always be in the last position */
     margin: 0 !important;
     margin-top: 12px !important;
     margin-bottom: 35px !important;
@@ -18,7 +18,7 @@
     color: red !important;
 }
 
-/* Parent container'ı da düzenle */
+/* Also arrange parent container */
 .captions-display--captions-container,
 .captions-display,
 [class*="captions-container"],
@@ -37,13 +37,13 @@
     flex-direction: column !important;
 }
 
-/* Tüm altyazı elementlerini alt alta zorla */
+/* Force all subtitle elements to be stacked vertically */
 .captions-display--captions-cue-text--TQ0DQ:not(.turkish-translation) {
     display: block !important;
     width: 100% !important;
     float: none !important;
     clear: both !important;
-    order: 1 !important; /* Orijinal altyazılar üstte olsun */
+    order: 1 !important; /* Original subtitles should be on top */
 }
 
 /* Çeviri metninin görünürlük animasyonu */

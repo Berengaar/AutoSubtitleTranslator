@@ -77,6 +77,42 @@
             transform: translateX(26px);
         }
 
+        .language-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .language-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .language-select:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .language-select option {
+            padding: 5px;
+        }
+
         .status {
             text-align: center;
             padding: 10px;
@@ -130,33 +166,51 @@
 </head>
 <body>
     <div class="header">
-        <h1>🎯 Udemy Çeviri</h1>
-        <p>Altyazıları Türkçeye çevir</p>
+        <h1>🎯 AutoDualSubtitleTranslator</h1>
+        <p>Translate subtitles automatically</p>
     </div>
 
     <div class="toggle-container">
-        <span class="toggle-label">Çeviri Aktif</span>
+        <span class="toggle-label">Translation Active</span>
         <div class="toggle-switch" id="toggleSwitch">
             <div class="toggle-slider"></div>
         </div>
     </div>
 
+    <div class="language-container">
+        <label class="language-label">Target Language:</label>
+        <select id="languageSelect" class="language-select">
+            <option value="tr">🇹🇷 Turkish</option>
+            <option value="es">🇪🇸 Spanish</option>
+            <option value="fr">🇫🇷 French</option>
+            <option value="de">🇩🇪 German</option>
+            <option value="it">🇮🇹 Italian</option>
+            <option value="pt">🇵🇹 Portuguese</option>
+            <option value="ru">🇷🇺 Russian</option>
+            <option value="ja">🇯🇵 Japanese</option>
+            <option value="ko">🇰🇷 Korean</option>
+            <option value="zh">🇨🇳 Chinese</option>
+            <option value="ar">🇸🇦 Arabic</option>
+            <option value="hi">🇮🇳 Hindi</option>
+        </select>
+    </div>
+
     <div class="status inactive" id="status">
-        <span id="statusText">Çeviri Kapalı</span>
+        <span id="statusText">Translation Off</span>
     </div>
 
     <div class="info">
-        <h3>📖 Nasıl Kullanılır:</h3>
+        <h3>📖 How to Use:</h3>
         <ul>
-            <li>Udemy video sayfasında altyazıları açın</li>
-            <li>Extension'ı aktif edin</li>
-            <li>İngilizce altyazıların altında Türkçe çeviriler görünecek</li>
-            <li>Çeviriler otomatik olarak güncellenecek</li>
+            <li>Open subtitles on Udemy video page</li>
+            <li>Activate the extension</li>
+            <li>Translations will appear below English subtitles</li>
+            <li>Translations update automatically</li>
         </ul>
     </div>
 
     <div class="footer">
-        <p>v1.0.0 | Türkçe Çeviri Extension</p>
+        <p>v1.0.0 | AutoDualSubtitleTranslator</p>
     </div>
 
     <script src="popup.js"></script>

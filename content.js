@@ -1,6 +1,7 @@
 class UdemySubtitleTranslator {
     constructor() {
         this.isActive = false;
+        this.targetLanguage = 'tr';
         this.lastTargetText = null;
         this.targetElementInterval = null;
         this.targetObserver = null;
@@ -8,8 +9,9 @@ class UdemySubtitleTranslator {
         this.init();
     }
     async init() {
-        const result = await chrome.storage.sync.get(['isActive']);
+        const result = await chrome.storage.sync.get(['isActive', 'targetLanguage']);
         this.isActive = result.isActive || false;
+        this.targetLanguage = result.targetLanguage || 'tr';
 
         this.injectCustomText();
 
@@ -35,6 +37,13 @@ class UdemySubtitleTranslator {
                     this.startTranslation();
                 } else {
                     this.stopTranslation();
+                }
+                sendResponse({ success: true });
+            } else if (message.action === 'changeLanguage') {
+                this.targetLanguage = message.targetLanguage;
+                // Mevcut çevirileri yenile
+                if (this.isActive) {
+                    this.updateTranslation();
                 }
                 sendResponse({ success: true });
             }
@@ -75,7 +84,7 @@ class UdemySubtitleTranslator {
 
     async translateText(text) {
         try {
-            const apiUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=tr&dt=t&q=${encodeURIComponent(text)}`;
+            const apiUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${this.targetLanguage}&dt=t&q=${encodeURIComponent(text)}`;
             const response = await fetch(apiUrl);
             
             if (!response.ok) {
@@ -85,7 +94,7 @@ class UdemySubtitleTranslator {
             const data = await response.json();
             return data[0]?.[0]?.[0] || text;
         } catch (error) {
-            console.error('Çeviri hatası:', error);
+            console.error('Translation error:', error);
             throw error;
         }
     }
@@ -113,7 +122,7 @@ class UdemySubtitleTranslator {
         const customTextElement = document.createElement('div');
         customTextElement.className = 'captions-display--captions-cue-text--TQ0DQ udemy-translation turkish-translation';
         customTextElement.setAttribute('data-purpose', 'captions-cue-text');
-        customTextElement.textContent = '🔄 Çevriliyor...';
+        customTextElement.textContent = '🔄 Translating...';
         
         // Udemy'nin orijinal stillerini kopyala
         const computedStyle = window.getComputedStyle(targetElement);
@@ -146,10 +155,10 @@ class UdemySubtitleTranslator {
         if (subtitleText && subtitleText.length > 5) {
             try {
                 const translatedText = await this.translateText(subtitleText);
-                customTextElement.textContent = translatedText || '⚠️ Çeviri bulunamadı';
+                customTextElement.textContent = translatedText || '⚠️ Translation not found';
                 customTextElement.style.color = translatedText ? 'white' : '#ffa500';
             } catch (error) {
-                customTextElement.textContent = '❌ Çeviri hatası';
+                customTextElement.textContent = '❌ Translation error';
                 customTextElement.style.color = '#dc3545';
             }
         }
@@ -226,7 +235,7 @@ class UdemySubtitleTranslator {
             customTextElement.style.position = 'relative';
 
             try {
-                customTextElement.textContent = '🔄 Çevriliyor...';
+                customTextElement.textContent = '🔄 Translating...';
                 const translatedText = await this.translateText(currentText);
                 
                 if (translatedText && translatedText !== currentText) {
@@ -234,7 +243,7 @@ class UdemySubtitleTranslator {
                     customTextElement.style.color = 'white';
                 }
             } catch (error) {
-                customTextElement.textContent = '❌ Çeviri hatası';
+                customTextElement.textContent = '❌ Translation error';
                 customTextElement.style.color = '#dc3545';
             } finally {
                 this.isTranslating = false;

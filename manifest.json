@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Udemy Türkçe Çeviri",
+  "name": "AutoDualSubtitleTranslator",
   "version": "1.0.0",
-  "description": "Udemy videolarının altyazılarını gerçek zamanlı olarak Türkçeye çevirir",
+  "description": "Automatically translates Udemy video subtitles to multiple languages in real-time",
   "permissions": [
     "activeTab",
     "storage"
@@ -21,7 +21,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Udemy Çeviri"
+    "default_title": "AutoDualSubtitleTranslator"
   },
   "web_accessible_resources": [
     {
