@@ -127,13 +127,18 @@ class UdemySubtitleTranslator {
             color: ${computedStyle.color};
             background: ${computedStyle.background};
             text-shadow: ${computedStyle.textShadow};
-            margin-top: 8px;
             display: block !important;
             width: 100% !important;
             clear: both !important;
             float: none !important;
             flex: none !important;
             position: relative !important;
+            margin: 0 !important;
+            margin-top: 12px !important;
+            margin-bottom: 35px !important;
+            padding: 0 !important;
+            gap: 0 !important;
+            color: red !important;
         `;
 
         targetElement.parentNode.appendChild(customTextElement);
