@@ -169,7 +169,7 @@ new MutationObserver(() => {
     if (url !== lastUrl) {
         lastUrl = url;
         if (url.includes('/learn/lecture/')) {
-            setTimeout(initializeTranslator, 1000);
+            setTimeout(initializeTranslator, 5000);
         }
     }
 }).observe(document, { subtree: true, childList: true });
