@@ -56,7 +56,7 @@ class UdemySubtitleTranslator {
         }
 
         this.targetElementInterval = setInterval(() => {
-            const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ:not(.udemy-translation):not(.turkish-translation)');
+            const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
             if (targetElement) {
                 const currentText = targetElement.textContent.trim();
                 if (currentText && currentText !== this.lastTargetText && currentText.length > 5) {
@@ -79,7 +79,7 @@ class UdemySubtitleTranslator {
             this.targetObserver = null;
         }
         
-        document.querySelectorAll('.captions-display--captions-cue-text--TQ0DQ.udemy-translation').forEach(el => el.remove());
+        // innerHTML yaklaşımı kullanıldığı için ayrı element silmeye gerek yok
     }
 
     async translateText(text) {
@@ -114,52 +114,20 @@ class UdemySubtitleTranslator {
     }
 
     async addCustomTextBelow(targetElement) {
-        if (targetElement.parentNode.querySelector('.captions-display--captions-cue-text--TQ0DQ.udemy-translation')) {
+        // Eğer çeviri zaten varsa, tekrar çevirme
+        if (targetElement.innerHTML.includes('<br>') && targetElement.innerHTML.includes('</span>')) {
             return;
         }
 
+        // Orijinal metni al (çeviri eklenmemiş)
         const subtitleText = targetElement.textContent.trim();
-        const customTextElement = document.createElement('div');
-        customTextElement.className = 'captions-display--captions-cue-text--TQ0DQ udemy-translation turkish-translation';
-        customTextElement.setAttribute('data-purpose', 'captions-cue-text');
-        customTextElement.textContent = '🔄 Translating...';
-        
-        // Udemy'nin orijinal stillerini kopyala
-        const computedStyle = window.getComputedStyle(targetElement);
-        customTextElement.style.cssText = `
-            font-size: ${computedStyle.fontSize};
-            font-family: ${computedStyle.fontFamily};
-            font-weight: ${computedStyle.fontWeight};
-            line-height: ${computedStyle.lineHeight};
-            text-align: ${computedStyle.textAlign};
-            opacity: ${computedStyle.opacity};
-            color: ${computedStyle.color};
-            background: ${computedStyle.background};
-            text-shadow: ${computedStyle.textShadow};
-            display: block !important;
-            width: 100% !important;
-            clear: both !important;
-            float: none !important;
-            flex: none !important;
-            position: relative !important;
-            margin: 0 !important;
-            margin-top: 12px !important;
-            margin-bottom: 35px !important;
-            padding: 0 !important;
-            gap: 0 !important;
-            color: red !important;
-        `;
-
-        targetElement.parentNode.appendChild(customTextElement);
 
         if (subtitleText && subtitleText.length > 5) {
             try {
                 const translatedText = await this.translateText(subtitleText);
-                customTextElement.textContent = translatedText || '⚠️ Translation not found';
-                customTextElement.style.color = translatedText ? 'white' : '#ffa500';
+                targetElement.innerHTML = subtitleText + '<br><span style="color: white;">' + (translatedText || '⚠️ Translation not found') + '</span>';
             } catch (error) {
-                customTextElement.textContent = '❌ Translation error';
-                customTextElement.style.color = '#dc3545';
+                targetElement.innerHTML = subtitleText + '<br><span style="color: #dc3545;">❌ Translation error</span>';
             }
         }
     }
@@ -170,7 +138,7 @@ class UdemySubtitleTranslator {
         }
 
         const targetObserver = new MutationObserver(() => {
-            const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ:not(.udemy-translation):not(.turkish-translation)');
+            const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
             if (targetElement) {
                 this.updateTranslation();
             }
@@ -178,7 +146,7 @@ class UdemySubtitleTranslator {
 
         this.targetObserver = targetObserver;
 
-        const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ:not(.udemy-translation)');
+        const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
         if (targetElement) {
             targetObserver.observe(targetElement, {
                 childList: true,
@@ -195,56 +163,37 @@ class UdemySubtitleTranslator {
             return;
         }
 
-        const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ:not(.udemy-translation)');
-        let customTextElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ.udemy-translation');
+        const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
         
         if (!targetElement) {
             return;
         }
 
-        if (!customTextElement) {
-            await this.addCustomTextBelow(targetElement);
-            customTextElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ.udemy-translation');
-            if (!customTextElement) {
+        // Eğer çeviri zaten varsa, orijinal metni innerHTML'den al
+        let currentText;
+        if (targetElement.innerHTML.includes('<br>') && targetElement.innerHTML.includes('</span>')) {
+            // Çeviri varsa, sadece orijinal metni al
+            currentText = targetElement.innerHTML.split('<br>')[0];
+            // Eğer metin değişmemişse, tekrar çevirme
+            if (currentText === this.lastTargetText) {
                 return;
             }
+        } else {
+            // Çeviri yoksa, normal textContent kullan
+            currentText = targetElement.textContent.trim();
         }
-
-        const currentText = targetElement.textContent.trim();
 
         if (currentText && currentText !== this.lastTargetText && currentText.length > 5) {
             this.isTranslating = true;
 
-            const computedStyle = window.getComputedStyle(targetElement);
-            customTextElement.style.fontSize = computedStyle.fontSize;
-            customTextElement.style.fontFamily = computedStyle.fontFamily;
-            customTextElement.style.fontWeight = computedStyle.fontWeight;
-            customTextElement.style.lineHeight = computedStyle.lineHeight;
-            customTextElement.style.textAlign = computedStyle.textAlign;
-            customTextElement.style.opacity = computedStyle.opacity;
-            customTextElement.style.color = computedStyle.color;
-            customTextElement.style.background = computedStyle.background;
-            customTextElement.style.textShadow = computedStyle.textShadow;
-            
-            // Alt alta gelmesi için gerekli stiller
-            customTextElement.style.display = 'block';
-            customTextElement.style.width = '100%';
-            customTextElement.style.clear = 'both';
-            customTextElement.style.float = 'none';
-            customTextElement.style.flex = 'none';
-            customTextElement.style.position = 'relative';
-
             try {
-                customTextElement.textContent = '🔄 Translating...';
                 const translatedText = await this.translateText(currentText);
                 
                 if (translatedText && translatedText !== currentText) {
-                    customTextElement.textContent = translatedText;
-                    customTextElement.style.color = 'white';
+                    targetElement.innerHTML = currentText + '<br><span style="color: white;">' + translatedText + '</span>';
                 }
             } catch (error) {
-                customTextElement.textContent = '❌ Translation error';
-                customTextElement.style.color = '#dc3545';
+                targetElement.innerHTML = currentText + '<br><span style="color: #dc3545;">❌ Translation error</span>';
             } finally {
                 this.isTranslating = false;
                 this.lastTargetText = currentText;
