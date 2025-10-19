@@ -3,7 +3,6 @@ class UdemySubtitleTranslator {
         this.isActive = false;
         this.targetLanguage = 'tr';
         this.lastTargetText = null;
-        this.targetElementInterval = null;
         this.targetObserver = null;
         this.isTranslating = false;
         this.init();
@@ -13,7 +12,7 @@ class UdemySubtitleTranslator {
         this.isActive = result.isActive || false;
         this.targetLanguage = result.targetLanguage || 'tr';
 
-        this.injectCustomText();
+        this.observeTargetElement();
 
         if (this.isActive) {
             this.startTranslation();
@@ -51,35 +50,14 @@ class UdemySubtitleTranslator {
     }
 
     startTranslation() {
-        if (this.targetElementInterval) {
-            clearInterval(this.targetElementInterval);
-        }
-
-        this.targetElementInterval = setInterval(() => {
-            const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
-            if (targetElement) {
-                const currentText = targetElement.textContent.trim();
-                if (currentText && currentText !== this.lastTargetText && currentText.length > 5) {
-                    this.updateTranslation();
-                }
-            }
-        }, 500);
-
         this.observeTargetElement();
     }
 
     stopTranslation() {
-        if (this.targetElementInterval) {
-            clearInterval(this.targetElementInterval);
-            this.targetElementInterval = null;
-        }
-        
         if (this.targetObserver) {
             this.targetObserver.disconnect();
             this.targetObserver = null;
         }
-        
-        // innerHTML yaklaşımı kullanıldığı için ayrı element silmeye gerek yok
     }
 
     async translateText(text) {
@@ -96,39 +74,6 @@ class UdemySubtitleTranslator {
         } catch (error) {
             console.error('Translation error:', error);
             throw error;
-        }
-    }
-
-    injectCustomText() {
-        this.findTargetElement();
-        this.observeTargetElement();
-    }
-
-    findTargetElement() {
-        const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
-        if (targetElement && targetElement.offsetHeight > 0 && targetElement.offsetWidth > 0) {
-            this.addCustomTextBelow(targetElement);
-        } else {
-            setTimeout(() => this.findTargetElement(), 3000);
-        }
-    }
-
-    async addCustomTextBelow(targetElement) {
-        // Eğer çeviri zaten varsa, tekrar çevirme
-        if (targetElement.innerHTML.includes('<br>') && targetElement.innerHTML.includes('</span>')) {
-            return;
-        }
-
-        // Orijinal metni al (çeviri eklenmemiş)
-        const subtitleText = targetElement.textContent.trim();
-
-        if (subtitleText && subtitleText.length > 5) {
-            try {
-                const translatedText = await this.translateText(subtitleText);
-                targetElement.innerHTML = subtitleText + '<br><span style="color: white;">' + (translatedText || '⚠️ Translation not found') + '</span>';
-            } catch (error) {
-                targetElement.innerHTML = subtitleText + '<br><span style="color: #dc3545;">❌ Translation error</span>';
-            }
         }
     }
 
