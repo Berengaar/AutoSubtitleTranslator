@@ -10,6 +10,7 @@
     float: none !important;
     flex: none !important;
     position: relative !important;
+    order: 2 !important; /* Her zaman son sırada olsun */
 }
 
 /* Parent container'ı da düzenle */
@@ -17,7 +18,7 @@
 .captions-display,
 [class*="captions-container"],
 [class*="captions-display"] {
-    display: block !important;
+    display: flex !important;
     flex-direction: column !important;
 }
 
@@ -29,11 +30,12 @@
 }
 
 /* Tüm altyazı elementlerini alt alta zorla */
-.captions-display--captions-cue-text--TQ0DQ {
+.captions-display--captions-cue-text--TQ0DQ:not(.turkish-translation) {
     display: block !important;
     width: 100% !important;
     float: none !important;
     clear: both !important;
+    order: 1 !important; /* Orijinal altyazılar üstte olsun */
 }
 
 /* Çeviri metninin görünürlük animasyonu */

@@ -136,7 +136,7 @@ class UdemySubtitleTranslator {
             position: relative !important;
         `;
 
-        targetElement.parentNode.insertBefore(customTextElement, targetElement.nextSibling);
+        targetElement.parentNode.appendChild(customTextElement);
 
         if (subtitleText && subtitleText.length > 5) {
             try {
