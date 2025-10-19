@@ -19,7 +19,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Content script'e mesaj gönder
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (tab && tab.url.includes('udemy.com')) {
-            chrome.tabs.sendMessage(tab.id, { action: 'toggleTranslation', isActive: newState });
+            try {
+                await chrome.tabs.sendMessage(tab.id, { action: 'toggleTranslation', isActive: newState });
+                console.log('✅ Content script\'e mesaj gönderildi');
+            } catch (error) {
+                console.log('⚠️ Content script\'e mesaj gönderilemedi:', error.message);
+            }
         }
         
         updateUI(newState);
