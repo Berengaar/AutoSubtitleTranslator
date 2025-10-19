@@ -5,6 +5,7 @@ class UdemySubtitleTranslator {
         this.lastTargetText = null;
         this.targetObserver = null;
         this.isTranslating = false;
+        this.elementCheckInterval = null;
         this.init();
     }
     async init() {
@@ -58,6 +59,10 @@ class UdemySubtitleTranslator {
             this.targetObserver.disconnect();
             this.targetObserver = null;
         }
+        if (this.elementCheckInterval) {
+            clearInterval(this.elementCheckInterval);
+            this.elementCheckInterval = null;
+        }
     }
 
     async translateText(text) {
@@ -91,6 +96,13 @@ class UdemySubtitleTranslator {
 
         this.targetObserver = targetObserver;
 
+        // Document'ı da gözlemle ki yeni elementler eklendiğinde fark edelim
+        targetObserver.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+        // Mevcut element varsa onu da gözlemle
         const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
         if (targetElement) {
             targetObserver.observe(targetElement, {
@@ -98,9 +110,15 @@ class UdemySubtitleTranslator {
                 subtree: true,
                 characterData: true
             });
-        } else {
-            setTimeout(() => this.observeTargetElement(), 2000);
         }
+
+        // Periyodik olarak element varlığını kontrol et
+        this.elementCheckInterval = setInterval(() => {
+            const targetElement = document.querySelector('.captions-display--captions-cue-text--TQ0DQ');
+            if (targetElement && !this.targetObserver) {
+                this.observeTargetElement();
+            }
+        }, 100);
     }
 
     async updateTranslation() {
@@ -128,7 +146,7 @@ class UdemySubtitleTranslator {
             currentText = targetElement.textContent.trim();
         }
 
-        if (currentText && currentText !== this.lastTargetText && currentText.length > 5) {
+        if (currentText && currentText !== this.lastTargetText) {
             this.isTranslating = true;
 
             try {
@@ -138,7 +156,9 @@ class UdemySubtitleTranslator {
                     targetElement.innerHTML = currentText + '<br><span style="color: white;">' + translatedText + '</span>';
                 }
             } catch (error) {
-                targetElement.innerHTML = currentText + '<br><span style="color: #dc3545;">❌ Translation error</span>';
+                console.error('Translation error:', error);
+                // Hata durumunda sadece orijinal metni göster, çeviriye devam et
+                targetElement.innerHTML = currentText;
             } finally {
                 this.isTranslating = false;
                 this.lastTargetText = currentText;
